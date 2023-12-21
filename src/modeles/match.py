@@ -1,4 +1,4 @@
-from src.modeles.joueur import Joueur
+from src.modeles.player import Joueur
 
 
 class Match:
@@ -6,4 +6,21 @@ class Match:
         # Initialisation des attributs du match
         self.joueur1 = joueur1
         self.joueur2 = joueur2
-        self.score = None
+        self.score_joueur1 = 0
+        self.score_joueur2 = 0
+
+    def definir_le_joueur_gagnant1(self):
+        self.score_joueur1 = 1
+        self.score_joueur2 = 0
+        self.joueur1.points += 1
+
+    def definir_le_joueur_gagnant2(self):
+        self.score_joueur1 = 0
+        self.score_joueur2 = 1
+        self.joueur2.points += 1
+
+    def set_draw(self):
+        self.score_joueur1 = 0.5
+        self.score_joueur2 = 0.5
+        self.joueur1.points += 0.5
+        self.joueur2.points += 0.5

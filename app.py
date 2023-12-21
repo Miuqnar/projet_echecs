@@ -1,9 +1,7 @@
 import os
-import subprocess as sp
 
 from src.controleurs.home_controller import HomeController
 from src.controleurs.tournaments_controller import TournamentController
-from src.vue.tournaments_view import TournamentView
 
 
 class App:
@@ -24,7 +22,6 @@ class App:
     # Méthode pour exécuter l'application
     def run(self):
         while not self.exit_flag:
-            # sp.call('clear', shell=True)
             # Nettoyer l'écran de la console (compatible avec différents systèmes d'exploitation)
             os.system('clear' if os.name == 'posix' else 'cls')
 
