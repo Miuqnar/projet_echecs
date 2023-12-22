@@ -1,23 +1,12 @@
 class HomeView:
     # Interface utilisateur pour la gestion des tournois
 
-    @staticmethod
-    def prin_menu():
-        print("MENU TOURNOI")
-        list_menu = [
-            "Céer un tournoi",
-            "Résumé du tournoi",
-            "Créer un joueur",
-            "Sortir"
-        ]
-        print("Choisissez parmi les 5 options suivantes:")
-        for i, menu_item in enumerate(list_menu, 1):
-            print(f"{i}: {menu_item}")
-
     @classmethod
-    def choice_list(cls):
-        HomeView.prin_menu()
-        return input("Choisissez parmi les options suivantes: ")
+    def home_page(cls):
+        print("MENU TOURNOI")
+        print("1. Créer un tournoi")
+        print("2. Résumé du tournoi")
+        print("3. Gestion des joueurs")
+        print("4. Sortir")
 
-
-
+        return input("Choisissez une option:")

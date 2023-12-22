@@ -6,25 +6,54 @@ class TournamentController:
     # créer un nouveau tournament
 
     @classmethod
-    def display_list(cls, data_store, route_params=None):
+    def display_tournament(cls, data_store, tournament_name=None):
         # Vérifier s'il y a des tournois dans le data_store
-        # tournaments = data_store.get("tournament", [])
 
-        tournament = TournamentView.show_options_for_returning_home(data_store["tournament"])
-        if tournament.lower() == "h":
+        try:
+
+            tournament = next(t for t in data_store["tournaments"] if t.name == tournament_name)
+        except StopIteration:
+            TournamentView.tournament_not_found(tournament_name)
+
             return "home", None
-        raise ValueError(f"Appuyez sur h pour revenir à la page d'accueil.")
+
+        choice = TournamentView.display_tournament(tournament)
+
+        match choice:
+            case 'h':
+                return "home", None
+            case 1:
+                return "add_players", tournament_name
+            case 2:
+                return "start_first_round", None
+            case _:
+                print("")
+        return "display_tournament", tournament.name
 
     @classmethod
-    def create_tournament(cls, data_store, route_params=None):
+    def add_players(cls, data_store, route_params=None):
+        tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
+
+        players = TournamentView.add_players(data_store["players"])
+        tournament.players = players
+
+        return "display_tournament", tournament.name
+
+    @classmethod
+    def create_tournament(cls, data_store, tournament_name=None):
         tournament_data = TournamentView.get_tournament_info()
         tournament = Tournament(tournament_data['name'],
                                 tournament_data['place'])
 
-        data_store["tournament"].append(tournament)
+        data_store["tournaments"].append(tournament)
 
-        return "display_tournament", None
+        return "display_tournament", tournament_data['name']
 
     @classmethod
-    def save_tournament(cls):
-        pass
+    def list_tournament(cls, data_store, route_params=None):
+        choice = TournamentView.list_tournaments(data_store["tournaments"])
+
+        if choice == "h":
+            return "home", None
+
+        return "display_tournament", choice

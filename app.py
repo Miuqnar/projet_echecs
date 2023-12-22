@@ -2,6 +2,8 @@ import os
 
 from src.controleurs.home_controller import HomeController
 from src.controleurs.tournaments_controller import TournamentController
+from src.modeles.player import Player
+from src.modeles.tournament import Tournament
 
 
 class App:
@@ -9,14 +11,29 @@ class App:
     ROUTES_MAPPING = {
         'home': HomeController.home_controller,
         'list_tournament': TournamentController.create_tournament,
-        'display_tournament': TournamentController.display_list
+        'create_tournament': TournamentController.create_tournament,
+        'display_tournament': TournamentController.display_tournament,
+        'list_tournaments': TournamentController.list_tournament,
+        'add_players': TournamentController.add_players,
     }
 
     def __init__(self) -> None:
         # Initialisation de l'application avec des valeurs par défaut
         self.current_route = 'home'  # Route actuelle
         self.route_params = None  # Paramètres de la route
-        self.data_store = {'tournament': []}
+        TODO: delete
+        tournament1 = Tournament(name="Summer Paris", place="Paris")
+        tournament2 = Tournament(name="Annual Lyon", place="Lyon")
+
+        player1 = Player(id="1", nom="Doe", prenom="John", date_naissance="01/01/1990")
+        player2 = Player(id="2", nom="Doe", prenom="Jane", date_naissance="01/01/1990")
+        player3 = Player(id="3", nom="Doe", prenom="Jack", date_naissance="01/01/1990")
+
+        # add 10 players
+
+        self.data_store = {'tournaments': [tournament1, tournament2],
+                           "players": [player1, player2, player3]}
+
         self.exit_flag = False
 
     # Méthode pour exécuter l'application
