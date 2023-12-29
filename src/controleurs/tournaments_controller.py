@@ -1,3 +1,4 @@
+from src.modeles.player import Player
 from src.modeles.tournament import Tournament
 from src.vue.tournaments_view import TournamentView
 
@@ -10,7 +11,6 @@ class TournamentController:
         # Vérifier s'il y a des tournois dans le data_store
 
         try:
-
             tournament = next(t for t in data_store["tournaments"] if t.name == tournament_name)
         except StopIteration:
             TournamentView.tournament_not_found(tournament_name)
@@ -19,23 +19,14 @@ class TournamentController:
 
         choice = TournamentView.display_tournament(tournament)
 
-        match choice:
-            case 'h':
-                return "home", None
-            case 1:
-                return "add_players", tournament_name
-            case 2:
-                return "start_first_round", None
-            case _:
-                print("")
-        return "display_tournament", tournament.name
-
-    @classmethod
-    def add_players(cls, data_store, route_params=None):
-        tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
-
-        players = TournamentView.add_players(data_store["players"])
-        tournament.players = players
+        if choice == "h":
+            return "home", None
+        elif choice == "1":
+            return "add_players", tournament_name
+        elif choice == "2":
+            return "start_first_round", tournament.name
+        else:
+            print("Choix invalide")
 
         return "display_tournament", tournament.name
 
@@ -48,6 +39,22 @@ class TournamentController:
         data_store["tournaments"].append(tournament)
 
         return "display_tournament", tournament_data['name']
+
+    @classmethod
+    def add_players(cls, data_store, route_params=None):
+        tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
+
+        players = TournamentView.add_players(data_store["players"])
+        tournament.players = players
+
+        return "display_tournament", tournament.name
+
+    @classmethod
+    def start_first_round(cls, data_store, route_params=None):
+        tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
+        tournament.start_tournament()
+
+        return "display_tournament", tournament.name
 
     @classmethod
     def list_tournament(cls, data_store, route_params=None):
