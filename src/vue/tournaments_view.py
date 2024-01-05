@@ -1,4 +1,3 @@
-
 class TournamentView:
 
     @classmethod
@@ -23,34 +22,51 @@ class TournamentView:
         else:
             print("\nAucun joueur inscrit.")
 
-        # print("\nListe des rounds:")
-        # for _round in _tournament.rounds:
-        #     # Afficher les détails de chaque tour
-        #     print(f"{_round.name} - Fin: {_round.date_fin}")
-        #     cls.display_matches(_round.matches)
+        print("\nListe des Tours:")
+        for _round in _tournament.rounds:
+            # Afficher les détails de chaque tour
+            print(f"{_round.name} debut: {_round.start_date} - Fin: {_round.date_fin}")
+            cls.display_matches(_round.matches)
 
         print("\n\nMENU:\n")
 
         if not _tournament.players:
             print("1. Ajouter des joueurs")
-        else:
+        elif not _tournament.rounds:
             print("2. Démarrer le premier tour")
-            print("h: home \n")
+        else:
+            current_round = _tournament.current_round
+            if current_round.is_finished:
+                print("3. Démarrer le prochain tour")
+            else:
+                print("4. Entrez le resultat de match")
+                match_id = int(input("Entrez l'id du match: "))
+                select_match = current_round.matches[match_id - 1]
+                if select_match.is_finished:
+                    print("On a déjà un resultat")
+                else:
+                    print(f"A. {select_match.player1} a gagné")
+                    print(f"B. {select_match.player2} a gagné")
+                    print(f"C. {select_match.player1} {select_match.player2} égalité")
+                    return input("Entrez le resultat"), select_match
+
+        print("h: home \n")
         return input("Choix: ")
 
-    # @classmethod
-    # def display_matches(cls, matches):
-    #     # Afficher les matchs d'un tour
-    #     print("\nListe des matchs:")
-    #     print("Nom\tNom\tScore\tRésultat\tPoints Joueur1\tPoints Joueur2")
-    #
-    #     for match in matches:
-    #         winner = match.define_winner()
-    #         result = f"{winner.name} gagne" if winner else "Match nul"
-    #
-    #         print(
-    #             f"{match.player1.name}\t{match.player2.name}\t{match.score_player1} - {match.score_player2}\t{result}\t{match.player1.points}\t\t{match.player2.points}\n"
-    #         )
+    @classmethod
+    def display_matches(cls, matches):
+        print("\nInformations sur le tour :")
+        for i, match in enumerate(matches, 1):
+            print(f"{i}: {match.player1.surname} vs {match.player2.surname}")
+
+        # print("\nRésultats du tour :")
+        # for match in matches:
+        #     print(f" {match.player1.surname} {match.score_player1} - {match.score_player2} {match.player2.surname}")
+        #
+        # print("\nScore des joueurs :")
+        # for match in matches:
+        #     print(f" {match.player1.surname}: {match.player1.points} points")
+        #     print(f" {match.player2.surname}: {match.player2.points} points")
 
     @classmethod
     def add_players(cls, players):

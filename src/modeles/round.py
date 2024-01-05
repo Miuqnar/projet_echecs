@@ -8,7 +8,7 @@ class Round:
         # Initialisation des attributs du tour
         self.name = name
         current_date = datetime.now()
-        # self.start_date = current_date.strftime('%d-%m-%Y %H:%M:%S')
+        self.start_date = current_date.strftime('%d-%m-%Y %H:%M:%S')
         self.date_fin = current_date.strftime('%d-%m-%Y %H:%M:%S')
         self.matches = []
 
@@ -16,5 +16,4 @@ class Round:
         # Ajouter un match au tour
         match = Match(player1, player2)
         self.matches.append(match)
-
 

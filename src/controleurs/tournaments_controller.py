@@ -1,4 +1,3 @@
-from src.modeles.player import Player
 from src.modeles.tournament import Tournament
 from src.vue.tournaments_view import TournamentView
 
@@ -24,7 +23,7 @@ class TournamentController:
         elif choice == "1":
             return "add_players", tournament_name
         elif choice == "2":
-            return "start_first_round", tournament.name
+            tournament.start_tournament()
         else:
             print("Choix invalide")
 
@@ -46,13 +45,6 @@ class TournamentController:
 
         players = TournamentView.add_players(data_store["players"])
         tournament.players = players
-
-        return "display_tournament", tournament.name
-
-    @classmethod
-    def start_first_round(cls, data_store, route_params=None):
-        tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
-        tournament.start_tournament()
 
         return "display_tournament", tournament.name
 

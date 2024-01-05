@@ -13,12 +13,24 @@ class Match:
         else:
             return None
 
-    def assign_points(self):
-        winner = self.define_winner()
-        if winner:
-            winner.points += 1
+    def assign_points(self, tournament):
+        if tournament.current_round <= tournament.nb_rounds:
+            winner = self.define_winner()
+            if winner:
+                winner.points += 1
+            else:
+                self.player1.points += 0.5
+                self.player2.points += 0.5
 
-        else:
-            self.player1.points += 0.5
-            self.player2.points += 0.5
+        # else:
+        #     print("Le tournoi est terminé. Les points ne sont plus attribués.")
+
+    # def assign_points(self):
+    #     winner = self.define_winner()
+    #     if winner:
+    #         winner.points += 1
+    #     else:
+    #         self.player1.points += 0.5
+    #         self.player2.points += 0.5
+
 

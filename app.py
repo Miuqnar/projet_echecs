@@ -14,7 +14,7 @@ class App:
         'display_tournament': TournamentController.display_tournament,
         'list_tournaments': TournamentController.list_tournament,
         'add_players': TournamentController.add_players,
-        'start_first_round': TournamentController.start_first_round,
+        # 'start_first_round': TournamentController.start_first_round,
     }
 
     def __init__(self) -> None:
@@ -22,7 +22,6 @@ class App:
         self.current_route = 'home'  # Route actuelle
         self.route_params = None  # Paramètres de la route
 
-        # TODO: delete
         tournament1 = Tournament(name="Summer Paris", place="Paris")
         tournament2 = Tournament(name="Annual Lyon", place="Lyon")
 
@@ -30,10 +29,10 @@ class App:
         player2 = Player(id="2", name="Doe", surname="Jane", birth_date="01/01/1990")
         player3 = Player(id="3", name="Doe", surname="Jack", birth_date="01/01/1990")
         player4 = Player(id="4", name="Doe", surname="Jill", birth_date="01/01/1990")
-        player5 = Player(id="5", name="Doe", surname="John", birth_date="01/01/1990")
-        player6 = Player(id="6", name="Doe", surname="Jane", birth_date="01/01/1990")
-        player7 = Player(id="7", name="Doe", surname="Jack", birth_date="01/01/1990")
-        player8 = Player(id="8", name="Doe", surname="Jill", birth_date="01/01/1990")
+        player5 = Player(id="6", name="Doe", surname="Herry", birth_date="01/01/1990")
+        player6 = Player(id="5", name="Doe", surname="Nicola", birth_date="01/01/1990")
+        player7 = Player(id="7", name="Doe", surname="Ronaldo", birth_date="01/01/1990")
+        player8 = Player(id="8", name="Doe", surname="William", birth_date="01/01/1990")
 
         # add 10 players
 
