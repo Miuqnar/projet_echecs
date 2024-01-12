@@ -24,6 +24,10 @@ class TournamentController:
             return "add_players", tournament_name
         elif choice == "2":
             tournament.start_tournament()
+        elif choice == "3":
+            return "enter_results", tournament_name
+        elif choice == "4":
+            tournament.start_next_round()
         else:
             print("Choix invalide")
 
@@ -56,3 +60,31 @@ class TournamentController:
             return "home", None
 
         return "display_tournament", choice
+
+    @classmethod
+    def enter_results(cls, data_store, route_params=None):
+        tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
+
+        TournamentView.display_rounds(tournament.rounds, TournamentView.display_matches)
+
+        round_choice = TournamentView.enter_results_menu(tournament.current_round.matches)
+
+        while round_choice != "H":
+            match_number = int(round_choice)
+            selected_match = tournament.current_round.matches[match_number - 1]
+            match_result = TournamentView.enter_results_choice(selected_match)
+
+            # Logique de scoring de la classe Match
+            selected_match.assign_points(match_result)
+
+            # Vérifier si c'est le dernier match du tour
+            if tournament.current_round.has_finished():
+                # Retourner automatiquement à la page display_tournament
+                return "display_tournament", tournament.name
+
+            round_choice = TournamentView.enter_results_menu(tournament.current_round.matches)
+
+        # Retourner à la page display_tournament après la fin de la boucle
+        return "display_tournament", tournament.name
+
+

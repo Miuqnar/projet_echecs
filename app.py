@@ -15,6 +15,7 @@ class App:
         'list_tournaments': TournamentController.list_tournament,
         'add_players': TournamentController.add_players,
         # 'start_first_round': TournamentController.start_first_round,
+        'enter_results': TournamentController.enter_results,
     }
 
     def __init__(self) -> None:
@@ -25,14 +26,14 @@ class App:
         tournament1 = Tournament(name="Summer Paris", place="Paris")
         tournament2 = Tournament(name="Annual Lyon", place="Lyon")
 
-        player1 = Player(id="1", name="Doe", surname="John", birth_date="01/01/1990")
+        player1 = Player(id="1", name="Wick", surname="John", birth_date="01/01/1990")
         player2 = Player(id="2", name="Doe", surname="Jane", birth_date="01/01/1990")
-        player3 = Player(id="3", name="Doe", surname="Jack", birth_date="01/01/1990")
-        player4 = Player(id="4", name="Doe", surname="Jill", birth_date="01/01/1990")
-        player5 = Player(id="6", name="Doe", surname="Herry", birth_date="01/01/1990")
-        player6 = Player(id="5", name="Doe", surname="Nicola", birth_date="01/01/1990")
-        player7 = Player(id="7", name="Doe", surname="Ronaldo", birth_date="01/01/1990")
-        player8 = Player(id="8", name="Doe", surname="William", birth_date="01/01/1990")
+        player3 = Player(id="3", name="Chan", surname="Jack", birth_date="01/01/1990")
+        player4 = Player(id="4", name="Chloe", surname="Jill", birth_date="01/01/1990")
+        player5 = Player(id="6", name="Potter", surname="Herry", birth_date="01/01/1990")
+        player6 = Player(id="5", name="Chris", surname="Nicola", birth_date="01/01/1990")
+        player7 = Player(id="7", name="Cris", surname="Ronaldo", birth_date="01/01/1990")
+        player8 = Player(id="8", name="smith", surname="William", birth_date="01/01/1990")
 
         # add 10 players
 
