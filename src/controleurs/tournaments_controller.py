@@ -69,22 +69,23 @@ class TournamentController:
 
         round_choice = TournamentView.enter_results_menu(tournament.current_round.matches)
 
-        while round_choice != "H":
-            match_number = int(round_choice)
-            selected_match = tournament.current_round.matches[match_number - 1]
-            match_result = TournamentView.enter_results_choice(selected_match)
+        while round_choice.upper() != "h":
+            if round_choice.isdigit():
+                match_number = int(round_choice)
+                selected_match = tournament.current_round.matches[match_number - 1]
+                match_result = TournamentView.enter_results_choice(selected_match)
 
-            # Logique de scoring de la classe Match
-            selected_match.assign_points(match_result)
+                # Logique de scoring de la classe Match
+                selected_match.assign_points(match_result)
 
-            # Vérifier si c'est le dernier match du tour
-            if tournament.current_round.has_finished():
-                # Retourner automatiquement à la page display_tournament
-                return "display_tournament", tournament.name
+                TournamentView.display_rounds(tournament.rounds, TournamentView.display_matches)
+
+                # Vérifier si c'est le dernier match du tour
+                if tournament.current_round.has_finished():
+                    # Retourner automatiquement à la page display_tournament
+                    return "display_tournament", tournament.name
 
             round_choice = TournamentView.enter_results_menu(tournament.current_round.matches)
 
         # Retourner à la page display_tournament après la fin de la boucle
         return "display_tournament", tournament.name
-
-

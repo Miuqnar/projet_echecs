@@ -19,29 +19,6 @@ class TournamentView:
 
         print("\n\nMENU:\n")
 
-        # if not _tournament.players:
-        #     print("1. Ajouter des joueurs")
-        # elif not _tournament.rounds:
-        #     print("2. Lancer le premier round")
-        # else:
-        #     current_round = _tournament.current_round
-        #     if current_round:
-        #         print(f"3. Entrer les résultats du {current_round.name}")
-        #         # print("4. Lancer le prochain tour")
-        #     else:
-        #         print("4. Lancer le prochain tour")
-        #         # print("5. Entrer le résultat du match")
-        #         match_id = cls.get_valid_match_id(current_round.matches)
-        #         select_match = current_round.matches[match_id - 1]
-        #         if select_match:
-        #             print("On a déjà un résultat")
-        #         else:
-        #             cls.enter_results_choice(select_match)
-        #             return input("Entrez le résultat"), select_match
-        #
-        # print("h: home \n")
-        # return input("Choix: ")
-
         if not _tournament.players:
             print("1. Ajouter des joueurs")
         elif not _tournament.rounds:
@@ -50,22 +27,11 @@ class TournamentView:
             current_round = _tournament.current_round
             if current_round:
                 print(f"3. Entrer les résultats du {current_round.name}")
+            if current_round.has_finished():
                 print("4. Lancer le prochain tour")
 
         print("h: home \n")
         return input("Choix: ")
-
-    # @classmethod
-    # def get_valid_match_id(cls, matches):
-    #     while True:
-    #         try:
-    #             match_id = int(input("Entrez l'id du match: "))
-    #             if 1 <= match_id <= len(matches):
-    #                 return match_id
-    #             else:
-    #                 print("ID de match invalide. Veuillez réessayer.")
-    #         except ValueError:
-    #             print("Veuillez entrer un numéro valide.")
 
     @classmethod
     def display_rounds(cls, rounds, display_matches_func):
@@ -79,11 +45,13 @@ class TournamentView:
 
     @classmethod
     def enter_results_menu(cls, matches):
-        print("\n1. Entrer le résultat du match 1")
-        print("2. Entrer le résultat du match 2")
-        print("3. Entrer le résultat du match 3")
-        print("4. Entrer le résultat du match 4")
-        print("H. Accueil")
+        print("\nOptions disponibles :")
+
+        for i, match in enumerate(matches, 1):
+            if not match.has_result():
+                print(f"{i}. Entrer le résultat du match {i}")
+
+        print("h. Accueil")
         return input("Choix: ")
 
     @classmethod
@@ -120,14 +88,17 @@ class TournamentView:
         for i, match in enumerate(matches, 1):
             player1_name = f"{match.player1.name} {match.player1.surname}"
             player2_name = f"{match.player2.name} {match.player2.surname}"
-            print(f"\t{i}: {player1_name} vs {player2_name} - en attente de résultats")
 
-    # @classmethod
-    # def display_round_points(cls, _round):
-    #     print(f"\nPoints du {_round.name} :")
-    #     for match in _round.matches:
-    #         print(f"{match.player1.name} {match.player1.surname}: {match.player1.points}")
-    #         print(f"{match.player2.name} {match.player2.surname}: {match.player2.points}")
+            winner = match.define_winner()
+            if match.has_result():
+                if winner:
+                    result_status = f"{winner.name} {winner.surname} a gagné"
+                else:
+                    result_status = f"Match nul"
+            else:
+                result_status = "en attente de résultats"
+
+            print(f"\t{i}: {player1_name} vs {player2_name} \t - {result_status}")
 
     @classmethod
     def add_players(cls, players):
@@ -140,7 +111,7 @@ class TournamentView:
 
         selected_players = []
 
-        for i in range(8):
+        for i in range(2):
             player_id = input("Sélectionner un joueur par son numéro d'identification:")
             player = next(p for p in players if p.id == player_id)
             selected_players.append(player)
