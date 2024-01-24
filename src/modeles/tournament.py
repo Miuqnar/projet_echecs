@@ -4,7 +4,6 @@ from datetime import datetime
 from src.modeles.match import Match
 from src.modeles.player import Player
 from src.modeles.round import Round
-from src.vue.tournaments_view import TournamentView
 
 
 class Tournament:
@@ -21,10 +20,12 @@ class Tournament:
         self.director_remark = ""
 
     def start_tournament(self):
-        # Vérifier s'il y a assez de joueurs pour commencer le tournoi
+        """Initialise le premier tour du tournoi en mélangeant aléatoirement les joueurs inscrits."""
+
         if len(self.players) < 2:
             print("Il n'y a pas assez de joueurs pour commencer le tournoi.")
             return
+
         # Mélanger les joueurs pour le premier tour
         random.shuffle(self.players)
 
@@ -39,46 +40,52 @@ class Tournament:
 
     @property
     def current_round(self):
+        """Renvoie la ronde actuelle du tournoi."""
+
         if not self.rounds:
             return None
         return self.rounds[-1]
 
     def start_next_round(self):
-        # Vérifier si le tournoi est déjà terminé
+        """Démarre la prochaine ronde du tournoi."""
+
         if len(self.rounds) >= self.nb_rounds:
             print("Le tournoi est déjà terminé.")
             return
 
-        # Génère les paires pour le prochain round
+        self.players_score()
+
         new_round = Round(f"Tour {len(self.rounds) + 1}")
 
-        # Créer une liste de joueurs triés par score
-        players_sorted = sorted(self.players, key=lambda player: player.points, reverse=True)
+        pairs = self.generate_pairs()
 
-        # Génération des paires en évitant les matchs déjà joués
+        for pair in pairs:
+            new_round.add_match(pair[0], pair[1])
+
+        self.rounds.append(new_round)
+
+    def generate_pairs(self):
+        """Génère les paires de joueurs pour la prochaine ronde."""
+
+        players_sorted = sorted(self.players, key=lambda x: x.points, reverse=True)
         pairs = []
 
         for i in range(0, len(players_sorted), 2):
             player1 = players_sorted[i]
             player2 = players_sorted[i + 1] if i + 1 < len(players_sorted) else None
 
-            # Vérifier si le joueur a déjà joué contre l'autre joueur dans ce tournoi
             while player2 and self.match_exists(player1, player2):
                 i += 1
                 player2 = players_sorted[i] if i < len(players_sorted) else None
 
-            # Exclure les joueurs avec la valeur None
             if player2:
-                # Ajouter les joueurs associés
                 pairs.append((player1, player2))
 
-        # Ajout des matchs au tour
-        for pair in pairs:
-            new_round.add_match(pair[0], pair[1])
-
-        self.rounds.append(new_round)
+        return pairs
 
     def match_exists(self, player1, player2):
+        """Vérifie si un match entre deux joueurs a déjà eu lieu dans les rondes précédentes."""
+
         for r in self.rounds:
             for match in r.matches:
                 if (match.player1 == player1 and match.player2 == player2) or (
@@ -86,50 +93,61 @@ class Tournament:
                     return True
         return False
 
+    def players_score(self):
+        """Calcule et met à jour les points des joueurs en fonction des résultats des matchs."""
+
+        for player in self.players:
+            player.points = 0
+
+        for round_obj in self.rounds:
+            for match in round_obj.matches:
+                match.player1.points += match.score_player1
+                match.player2.points += match.score_player2
+
+        players_score = sorted(
+            [{"player": player, "score": player.points} for player in self.players],
+            key=lambda k: k["score"], reverse=True
+        )
+
+        return players_score
+
     def serialize(self):
-        # Convertit les attributs en un dictionnaire pour faciliter la manipulation des données
+        """Convertit les données du tournoi en un dictionnaire JSON serializable."""
+
         return {
             "name": self.name,
             "place": self.place,
             "start_date": self.start_date,
             "end_date": self.end_date,
             "nb_rounds": self.nb_rounds,
-            "current_round": self.current_round,
-            "rounds": self.rounds,
-            "players": self.players,
+            "rounds": [round_obj.serialize() for round_obj in self.rounds],
+            "players": [player.serialize() for player in self.players],
             "director_remark": self.director_remark,
         }
 
+    @classmethod
+    def deserialize(cls, data):
+        """Creation d'une instance de la classe Tournament à partir des données désérialisées."""
 
-# if __name__ == '__main__':
-#     tournament = Tournament("echecs", "Paris")
-#     tournament.start_next_round()
-#     player_1 = Player(id="1", name="Doe", surname="John", birth_date="01/01/1990")
-#     player_2 = Player(id="2", name="Doe", surname="Jane", birth_date="01/01/1990")
-#     player_3 = Player(id="3", name="Doe", surname="Jack", birth_date="01/01/1990")
-#     player_4 = Player(id="4", name="Doe", surname="Jill", birth_date="01/01/1990")
-#
-#     tournament = Tournament("Echecs", "Paris")
-#     tournament.players = [player_1, player_2, player_3, player_4]
-#
-#     for i in range(tournament.nb_rounds):
-#         round_name = f"Round {i + 1}"
-#         new_round = Round(round_name)
-#         tournament.rounds.append(new_round)
-#
-#     for current_round in tournament.rounds:
-#         for i in range(0, len(tournament.players), 2):
-#             player_1 = tournament.players[i]
-#             player_2 = tournament.players[i + 1]
-#             # print("player 1", player_1.surname)
-#             # print("player 2", player_2.surname)
-#             current_round.add_match(player_1, player_2)
-#
-#     for current_round in tournament.rounds:
-#         print(current_round.name)
-#         for match in current_round.matches:
-#             print(match)
-#             match.assign_points()
-#
-#     for player in tournament.players:
-#         print(f"{player.surname} {player.points}")
+        instance = cls(
+            name=data["name"],
+            place=data["place"]
+        )
+
+        instance.start_date = data["start_date"]
+        instance.end_date = data["end_date"]
+        instance.nb_rounds = data["nb_rounds"]
+        instance.director_remark = data["director_remark"]
+
+        # Désérialiser les joueurs
+        instance.players = [Player.deserialize(player_data) for player_data in data["players"]]
+
+        # Désérialiser les rounds
+        instance.rounds = [Round.deserialize(round_data) for round_data in data["rounds"]]
+
+        # Appeler start_tournament pour mettre à jour correctement current_round
+        instance.start_tournament()
+
+        return instance
+
+
