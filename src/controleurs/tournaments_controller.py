@@ -4,31 +4,12 @@ from src.vue.tournaments_view import TournamentView
 
 # Non-Breaking Space(NBSP)
 class TournamentController:
-    """
-       Contrôleur pour la gestion des tournois.
-
-       Méthodes :
-       - display_tournament: Affiche les détails d'un tournoi spécifique.
-       - create_tournament : Crée un nouveau tournoi.
-       - add_players : Ajoute des joueurs à un tournoi existant.
-       - list_tournament : Affiche la liste des tournois disponibles.
-       - enter_results : Permet à l'utilisateur d'entrer les résultats
-            des matchs d'un tournoi.
-       """
 
     @classmethod
     def display_tournament(cls, data_store, tournament_name=None):
-        """Affiche les détails d'un tournoi et gère les actions de l'utilisateur."""
-
         """
-              Affiche les détails d'un tournoi spécifique.
-
-              Paramètres:
-              - data_store (dict): Dictionnaire contenant les données du tournoi.
-              - tournament_name (str): Nom du tournoi à afficher.
-
-              Retourne:
-              - Tuple : (Nouvelle page, Paramètres additionnels)
+        Affiche les détails d'un tournoi
+        et gère les actions de l'utilisateur.
         """
 
         try:
@@ -59,17 +40,9 @@ class TournamentController:
 
     @classmethod
     def create_tournament(cls, data_store, tournament_name=None):
-        """Crée un nouveau tournoi en demandant des informations à l'utilisateur."""
-
         """
-              Crée un nouveau tournoi.
-
-              Paramètres:
-              - data_store (dict): Dictionnaire contenant les données du tournoi.
-              - tournament_name (str): Nom du tournoi à créer.
-
-              Retourne:
-              - Tuple : (Nouvelle page, Paramètres additionnels)
+        Crée un nouveau tournoi en demandant
+        des informations à l'utilisateur.
         """
 
         tournament_data = TournamentView.get_tournament_info()
@@ -84,17 +57,6 @@ class TournamentController:
     def add_players(cls, data_store, route_params=None):
         """Ajoute des joueurs à un tournoi."""
 
-        """
-           Ajoute des joueurs à un tournoi existant.
-
-           Paramètres:
-           - data_store (dict): Dictionnaire contenant les données du tournoi.
-           - route_params (str): Nom du tournoi auquel ajouter des joueurs.
-
-           Retourne:
-           - Tuple : (Nouvelle page, Paramètres additionnels)
-       """
-
         tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
 
         # Ajouter des joueurs au tournoi à partir de la vue
@@ -105,17 +67,9 @@ class TournamentController:
 
     @classmethod
     def list_tournament(cls, data_store, route_params=None):
-        """Affiche la liste des tournois et demande le choix de l'utilisateur."""
-
         """
-            Affiche la liste des tournois disponibles.
-
-            Paramètres:
-            - data_store (dict): Dictionnaire contenant les données du tournoi.
-            - route_params (None): Paramètre non utilisé.
-
-            Retourne:
-            - Tuple : (Nouvelle page, Paramètres additionnels)
+        Affiche la liste des tournois et
+        demande le choix de l'utilisateur.
         """
 
         choice = TournamentView.list_tournaments(data_store["tournaments"])
@@ -128,17 +82,6 @@ class TournamentController:
     @classmethod
     def enter_results(cls, data_store, route_params=None):
         """Saisit les résultats des matches pour un tournoi."""
-
-        """
-             Permet à l'utilisateur d'entrer les résultats des matchs d'un tournoi.
-    
-             Paramètres:
-             - data_store (dict): Dictionnaire contenant les données du tournoi.
-             - route_params (str): Nom du tournoi pour lequel entrer les résultats.
-    
-             Retourne:
-             - Tuple : (Nouvelle page, Paramètres additionnels)
-        """
 
         tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
 

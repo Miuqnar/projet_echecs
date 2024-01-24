@@ -20,7 +20,10 @@ class Tournament:
         self.director_remark = ""
 
     def start_tournament(self):
-        """Initialise le premier tour du tournoi en mélangeant aléatoirement les joueurs inscrits."""
+        """
+        Initialise le premier tour du tournoi
+        en mélangeant aléatoirement les joueurs inscrits.
+        """
 
         if len(self.players) < 2:
             print("Il n'y a pas assez de joueurs pour commencer le tournoi.")
@@ -67,7 +70,8 @@ class Tournament:
     def generate_pairs(self):
         """Génère les paires de joueurs pour la prochaine ronde."""
 
-        players_sorted = sorted(self.players, key=lambda x: x.points, reverse=True)
+        players_sorted = sorted(self.players,
+                                key=lambda x: x.points, reverse=True)
         pairs = []
 
         for i in range(0, len(players_sorted), 2):
@@ -84,7 +88,10 @@ class Tournament:
         return pairs
 
     def match_exists(self, player1, player2):
-        """Vérifie si un match entre deux joueurs a déjà eu lieu dans les rondes précédentes."""
+        """
+        Vérifie si un match entre deux joueurs a
+        déjà eu lieu dans les rondes précédentes.
+        """
 
         for r in self.rounds:
             for match in r.matches:
@@ -94,7 +101,10 @@ class Tournament:
         return False
 
     def players_score(self):
-        """Calcule et met à jour les points des joueurs en fonction des résultats des matchs."""
+        """
+        Calcule et met à jour les points des
+        joueurs en fonction des résultats des matchs.
+        """
 
         for player in self.players:
             player.points = 0
@@ -105,14 +115,18 @@ class Tournament:
                 match.player2.points += match.score_player2
 
         players_score = sorted(
-            [{"player": player, "score": player.points} for player in self.players],
+            [{"player": player, "score": player.points}
+             for player in self.players],
             key=lambda k: k["score"], reverse=True
         )
 
         return players_score
 
     def serialize(self):
-        """Convertit les données du tournoi en un dictionnaire JSON serializable."""
+        """
+        Convertit les données du tournoi en
+        un dictionnaire JSON serializable.
+        """
 
         return {
             "name": self.name,
@@ -127,7 +141,10 @@ class Tournament:
 
     @classmethod
     def deserialize(cls, data):
-        """Creation d'une instance de la classe Tournament à partir des données désérialisées."""
+        """
+        Creation d'une instance de la classe
+        Tournament à partir des données désérialisées.
+        """
 
         instance = cls(
             name=data["name"],
@@ -140,14 +157,15 @@ class Tournament:
         instance.director_remark = data["director_remark"]
 
         # Désérialiser les joueurs
-        instance.players = [Player.deserialize(player_data) for player_data in data["players"]]
+        instance.players = [Player.deserialize(player_data)
+                            for player_data in data["players"]]
 
         # Désérialiser les rounds
-        instance.rounds = [Round.deserialize(round_data) for round_data in data["rounds"]]
+        instance.rounds = [Round.deserialize(round_data)
+                           for round_data in data["rounds"]]
 
-        # Appeler start_tournament pour mettre à jour correctement current_round
+        # Appeler start_tournament pour
+        # mettre à jour correctement current_round
         instance.start_tournament()
 
         return instance
-
-

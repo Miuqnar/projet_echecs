@@ -1,5 +1,8 @@
 class Player:
-    """ Initialisation des attributs du joueur et initialisation des points à 0"""
+    """
+    Initialisation des attributs
+    du joueur et initialisation des points à 0
+    """
 
     def __init__(self, id, name, surname, birth_date):
         self.id = id
@@ -10,7 +13,10 @@ class Player:
         self.points = 0
 
     def serialize(self):
-        """Convertit les données du joueur en un dictionnaire JSON serializable."""
+        """
+        Convertit les données du joueur
+        en un dictionnaire JSON serializable.
+        """
 
         return {
             "id": self.id,
@@ -22,7 +28,10 @@ class Player:
 
     @classmethod
     def deserialize(cls, data):
-        """Crée une instance de la classe Player à partir des données désérialisées."""
+        """
+        Crée une instance de la classe
+        Player à partir des données désérialisées.
+        """
 
         instance = cls(
             id=data["id"],

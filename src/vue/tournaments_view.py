@@ -2,7 +2,10 @@ class TournamentView:
 
     @classmethod
     def get_tournament_info(cls):
-        """Obtient les informations d'un tournoi depuis l'utilisateur."""
+        """
+        Obtient les informations d'un
+        tournoi depuis l'utilisateur.
+        """
 
         return {
             "name": input("Nom du tournoi: ").strip().title(),
@@ -11,7 +14,10 @@ class TournamentView:
 
     @classmethod
     def display_tournament(cls, _tournament):
-        """Affiche les détails d'un tournoi, y compris les joueurs, les rondes et les options disponibles."""
+        """
+        Affiche les détails d'un tournoi, y compris
+        les joueurs, les rondes et les options disponibles.
+        """
 
         print(f"Date de début: {_tournament.start_date} \n")
         print(f"Nom du tournoi: {_tournament.name}")
@@ -54,7 +60,10 @@ class TournamentView:
 
     @classmethod
     def add_players(cls, players):
-        """Demande à l'utilisateur de sélectionner des joueurs."""
+        """
+        Demande à l'utilisateur
+        de sélectionner des joueurs.
+        """
 
         print("Liste des joueurs")
 
@@ -154,7 +163,10 @@ class TournamentView:
 
     @classmethod
     def list_tournaments(cls, tournaments):
-        """Affiche la liste des tournois et demande à l'utilisateur de sélectionner un tournoi."""
+        """
+        Affiche la liste des tournois et demande à
+        l'utilisateur de sélectionner un tournoi.
+        """
 
         print("Liste des tournois\n")
 

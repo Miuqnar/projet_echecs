@@ -5,7 +5,10 @@ from src.modeles.match import Match
 
 class Round:
     def __init__(self, name):
-        """Initialisation d'une instance de la classe Round"""
+        """
+        Initialisation d'une
+        instance de la classe Round
+        """
 
         self.name = name
         current_date = datetime.now()
@@ -14,18 +17,27 @@ class Round:
         self.matches = []
 
     def has_finished(self):
-        """Vérifie si tous les matchs dans le tour ont un résultat"""
+        """
+        Vérifie si tous les matchs
+        dans le tour ont un résultat
+        """
 
         return all([match.has_result() for match in self.matches])
 
     def add_match(self, player1, player2):
-        """ Ajouter un match au tour en créant une instance de la classe Match"""
+        """
+        Ajouter un match au tour
+        en créant une instance de la classe Match
+        """
 
         match = Match(player1, player2)
         self.matches.append(match)
 
     def serialize(self):
-        """Convertir l'objet Round en un dictionnaire pour la sérialisation"""
+        """
+        Convertir l'objet Round en
+        un dictionnaire pour la sérialisation
+        """
 
         return {
             "name": self.name,
@@ -36,7 +48,10 @@ class Round:
 
     @classmethod
     def deserialize(cls, data):
-        """ Méthode de classe pour désérialiser un dictionnaire en une instance de la classe Round"""
+        """
+        Méthode de classe pour désérialiser
+         un dictionnaire en une instance de la classe Round
+         """
 
         instance = cls(name=data["name"])
 
@@ -44,9 +59,7 @@ class Round:
         instance.end_date = data["end_date"]
 
         # Désérialiser les matchs
-        instance.matches = [Match.deserialize(match_data) for match_data in data["matches"]]
+        instance.matches = [Match.deserialize(match_data)
+                            for match_data in data["matches"]]
 
         return instance
-
-
-
