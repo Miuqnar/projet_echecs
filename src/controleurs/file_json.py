@@ -10,7 +10,7 @@ class TournamentDataManager:
         """Enregistre les données des tournois au format JSON."""
 
         for tournament in data_store['tournaments']:
-            tournament_filename = DATA_DIR / f"tournament_{tournament.name}.json"
+            tournament_filename = DATA_DIR / f"{tournament.name}.json"
 
             with open(tournament_filename, 'w') as json_file:
                 json.dump(tournament.serialize(), json_file, indent=4)

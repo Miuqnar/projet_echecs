@@ -29,10 +29,13 @@ class TournamentView:
             print("2. Lancer le premier tour")
         else:
             current_round = _tournament.current_round
-            if current_round:
+
+            if not current_round.has_finished():
                 print(f"3. Entrer les résultats du {current_round.name}")
-            if current_round.has_finished():
+            elif len(_tournament.rounds) < _tournament.nb_rounds:
                 print("4. Lancer le prochain tour")
+            else:
+                print("Fin des tours")
 
         print("h: home \n")
         return input("Choix: ")
