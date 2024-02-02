@@ -136,7 +136,6 @@ class Tournament:
             'end_date': self.end_date,
             'nb_rounds': self.nb_rounds,
             "director_remark": self.director_remark,
-
             "players": [player.id for player in self.players],
             'rounds': [round_obj.serialize() for round_obj in self.rounds],
             'players_ranking': [
@@ -165,7 +164,6 @@ class Tournament:
 
         # objets Player existants de la liste players
         instance.players = [players[player_id] for player_id in data['players']]
-        # instance.players = [Player.deserialize(player_data) for player_data in data['players']]
         instance.rounds = [Round.deserialize(round_data, players) for round_data in data['rounds']]
 
         return instance
