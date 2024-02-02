@@ -47,11 +47,11 @@ class Round:
         }
 
     @classmethod
-    def deserialize(cls, data):
+    def deserialize(cls, data, players):
         """
         Méthode de classe pour désérialiser
-         un dictionnaire en une instance de la classe Round
-         """
+        un dictionnaire en une instance de la classe Round
+        """
 
         instance = cls(name=data["name"])
 
@@ -59,7 +59,8 @@ class Round:
         instance.end_date = data["end_date"]
 
         # Désérialiser les matchs
-        instance.matches = [Match.deserialize(match_data)
+        instance.matches = [Match.deserialize(match_data, players)
                             for match_data in data["matches"]]
 
         return instance
+

@@ -33,44 +33,71 @@ class Match:
             return None
 
     def assign_points(self, match_result: int):
-        """if match_result = 1 then player1 wins else:
-        if match_result = 1 then player2 wins otherwise it's drow
+        """
+        if match_result = 1 then player1 wins else:
+        if match_result = 2 then player2 wins otherwise it's drow
 
         Attribue les points en fonction du résultat du match.
         """
 
         if match_result == 1:
             self.score_player1 = 1
+            self.player1.points += self.score_player1
         elif match_result == 2:
             self.score_player2 = 1
+            self.player2.points += self.score_player2
         else:
-            self.score_player1 += 0.5
-            self.score_player2 += 0.5
+            self.score_player1 = self.score_player2 = 0.5
+            self.player1.points += self.score_player1
+            self.player2.points += self.score_player2
+
+    # def assign_points(self, match_result: int):
+    #     """if match_result = 1 then player1 wins else:
+    #     if match_result = 1 then player2 wins otherwise it's drow
+    #
+    #     Attribue les points en fonction du résultat du match.
+    #     """
+    #
+    #     if match_result == 1:
+    #         self.score_player1 = 1
+    #     elif match_result == 2:
+    #         self.score_player2 = 1
+    #     else:
+    #         self.score_player1 += 0.5
+    #         self.score_player2 += 0.5
 
     def serialize(self):
         """
         Convertit les données du match
         en un dictionnaire JSON serializable.
         """
-
         return {
-            "player1": self.player1.serialize(),
-            "player2": self.player2.serialize(),
-            "score_player1": self.score_player1,
-            "score_player2": self.score_player2,
+            'player1': self.player1.id,
+            'player2': self.player2.id,
+            'score_player1': self.score_player1,
+            'score_player2': self.score_player2,
         }
 
     @classmethod
-    def deserialize(cls, data):
+    def deserialize(cls, data, players):
         """
-        Creation une instance de la classe
-        Match à partir des données désérialisées.
+          Désérialise les données et crée une instance de la classe Match à partir de ces données.
+
+          :param data: Les données sérialisées du match.
+          :return: Une instance de la classe Match créée à partir des données désérialisées.
         """
 
-        instance = cls(player1=Player.deserialize(data["player1"]),
-                       player2=Player.deserialize(data["player2"]))
+        # récupérer les données des joueurs à partir de la source des données
+        player1_id = data.get("player1")
+        player2_id = data.get("player2")
 
-        instance.score_player1 = data["score_player1"]
-        instance.score_player2 = data["score_player2"]
+        # Créer des instances de la classe Player avec les données fournies
+        player1 = players[player1_id]
+        player2 = players[player2_id]
 
-        return instance
+        match = cls(player1, player2)
+        match.score_player1 = data["score_player1"]
+        match.score_player2 = data["score_player2"]
+
+        return match
+

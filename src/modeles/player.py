@@ -1,3 +1,6 @@
+from src.constants.constant import DATA_DIR
+
+
 class Player:
     """
     Initialisation des attributs
@@ -23,23 +26,20 @@ class Player:
             "name": self.name,
             "surname": self.surname,
             "birth_date": self.birth_date,
-            "points": self.points,
+            # "points": self.points,
         }
 
-    @classmethod
-    def deserialize(cls, data):
+    @staticmethod
+    def deserialize(data):
         """
         Crée une instance de la classe
         Player à partir des données désérialisées.
         """
 
-        instance = cls(
+        return Player(
             id=data["id"],
             name=data["name"],
             surname=data["surname"],
             birth_date=data["birth_date"]
         )
 
-        instance.points = data["points"]
-
-        return instance

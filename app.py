@@ -51,10 +51,13 @@ class App:
             id="8", name="smith", surname="Will", birth_date="01/01/1990"
         )
 
-        self.data_store = {'tournaments': [tournament1, tournament2],
-                           "players": [player1, player2, player3,
-                                       player4, player5, player6,
-                                       player7, player8]}
+        players = TournamentDataManager.load_players()
+        data = TournamentDataManager.load_tournaments(players)
+
+        self.data_store = {'tournaments': data,
+                           "players": players.values()}
+
+        # self.data_store = data
 
         self.exit_flag = False
 
