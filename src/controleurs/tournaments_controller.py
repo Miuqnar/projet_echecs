@@ -1,3 +1,4 @@
+from src.controleurs.file_json import TournamentDataManager
 from src.modeles.tournament import Tournament
 from src.vue.tournaments_view import TournamentView
 
@@ -6,7 +7,7 @@ from src.vue.tournaments_view import TournamentView
 class TournamentController:
 
     @classmethod
-    def display_tournament(cls, data_store, tournament_name=None):
+    def display_tournament(cls, data_store, tournament_name):
         """
         Affiche les détails d'un tournoi
         et gère les actions de l'utilisateur.
@@ -14,7 +15,8 @@ class TournamentController:
 
         try:
             # Rechercher le tournoi par nom dans la liste des tournois
-            tournament = next(t for t in data_store["tournaments"] if t.name == tournament_name)
+            tournament = next(t for t in data_store["tournaments"]
+                              if t.name == tournament_name)
         except StopIteration:
             TournamentView.tournament_not_found(tournament_name)
 
@@ -57,13 +59,35 @@ class TournamentController:
     def add_players(cls, data_store, route_params=None):
         """Ajoute des joueurs à un tournoi."""
 
-        tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
+        tournament = next(t for t in data_store["tournaments"]
+                          if t.name == route_params)
 
         # Ajouter des joueurs au tournoi à partir de la vue
         players = TournamentView.add_players(data_store["players"])
         tournament.players = players
 
         return "display_tournament", tournament.name
+
+    @classmethod
+    def manage_players_list(cls, data_store, route_params=None):
+        user_choice, \
+         player_id = TournamentView.select_player_option(data_store['players'])
+
+        if user_choice == 'h':
+            return 'home', None
+        elif user_choice == '1':
+            return 'update_player', player_id
+        else:
+            raise Exception("Choix invalide.")
+
+    @classmethod
+    def manage_player(cls, data_store, route_params):
+        player = next(player for player in data_store['players']
+                      if player.id == route_params)
+        update_player = TournamentView.update_player_info(player)
+        TournamentDataManager.save_player_to_json(player)
+
+        return 'player_management', update_player
 
     @classmethod
     def list_tournament(cls, data_store, route_params=None):
@@ -74,7 +98,7 @@ class TournamentController:
 
         choice = TournamentView.list_tournaments(data_store["tournaments"])
 
-        if choice == "h":
+        if choice == "H":
             return "home", None
 
         return "display_tournament", choice
@@ -83,29 +107,36 @@ class TournamentController:
     def enter_results(cls, data_store, route_params=None):
         """Saisit les résultats des matches pour un tournoi."""
 
-        tournament = next(t for t in data_store["tournaments"] if t.name == route_params)
+        tournament = next(t for t in data_store["tournaments"]
+                          if t.name == route_params)
 
-        TournamentView.display_round(tournament.current_round, TournamentView.display_matches)
+        TournamentView.display_round(tournament.current_round,
+                                     TournamentView.display_matches)
 
-        round_choice = TournamentView.enter_results_menu(tournament.current_round.matches)
+        round_choice = TournamentView.\
+            enter_results_menu(tournament.current_round.matches)
 
         while round_choice.lower() != "h":
             if round_choice.isdigit():
                 match_number = int(round_choice)
-                selected_match = tournament.current_round.matches[match_number - 1]
-                match_result = TournamentView.enter_results_choice(selected_match)
+                selected_match = tournament.current_round.matches[match_number
+                                                                  - 1]
+                match_result = TournamentView.\
+                    enter_results_choice(selected_match)
 
                 # Logique de scoring de la classe Match
                 selected_match.assign_points(match_result)
 
-                TournamentView.display_round(tournament.current_round, TournamentView.display_matches)
+                TournamentView.display_round(tournament.current_round,
+                                             TournamentView.display_matches)
 
                 # Vérifier si c'est le dernier match du tour
                 if tournament.current_round.has_finished():
                     # Retourner automatiquement à la page display_tournament
                     return "display_tournament", tournament.name
 
-                round_choice = TournamentView.enter_results_menu(tournament.current_round.matches)
+                round_choice = TournamentView.\
+                    enter_results_menu(tournament.current_round.matches)
 
         # Retourner à la page display_tournament après la fin de la boucle
         return "display_tournament", tournament.name

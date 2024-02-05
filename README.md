@@ -44,7 +44,8 @@ Python3 app.py
 
     1 : Créer un tournoi
     2 : Résumé du tournoi
-    3 : Sortir
+    3 : Gestion des joueurs
+    4 : Sortir
 
 
     Choix: _1_
@@ -238,10 +239,26 @@ Python3 app.py
     
     Sélectionner un tournoi par son nom: 
 
+#### Liste des joueurs
+    
+    Gestion des joueurs
 
+    id nom      prenom  date de naissance
+    1  player1  player1 01/01/1990
+    2  player2  player2 01/01/1990
+    3  player3  player3 01/01/1990
+    4  player4  player4 01/01/1990
+    5  player5  player5 01/01/1990
+    6  player6  player6 01/01/1990
+    7  player7  player7 01/01/1990
+    8  player8  player8 01/01/1990
 
+    1. Mise à jour du joueur
+    h. home
 
+    choix: __1__   
+    Saisir l'identifiant du joueur: __id__
 
-
-
+### Flake-rort
+![file.png](src%2Fflake-report%2Ffile.png)
 

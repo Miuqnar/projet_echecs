@@ -1,5 +1,3 @@
-from src.modeles.player import Player
-
 
 class Match:
     def __init__(self, player1, player2):
@@ -81,10 +79,8 @@ class Match:
     @classmethod
     def deserialize(cls, data, players):
         """
-          Désérialise les données et crée une instance de la classe Match à partir de ces données.
-
-          :param data: Les données sérialisées du match.
-          :return: Une instance de la classe Match créée à partir des données désérialisées.
+          Désérialise les données et crée une instance
+          de la classe Match à partir de ces données.
         """
 
         # récupérer les données des joueurs à partir de la source des données
@@ -100,4 +96,3 @@ class Match:
         match.score_player2 = data["score_player2"]
 
         return match
-
