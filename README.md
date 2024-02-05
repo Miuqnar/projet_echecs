@@ -259,6 +259,6 @@ Python3 app.py
     choix: __1__   
     Saisir l'identifiant du joueur: __id__
 
-### Flake-rort
+### Flake-report
 ![file.png](src%2Fflake-report%2Ffile.png)
 
