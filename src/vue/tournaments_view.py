@@ -54,9 +54,48 @@ class TournamentView:
             print("\nListe des joueurs:")
             print("id\tnom\tprenom\tdate de naissance")
             for player in players:
-                print(f"{player.id}\t{player.name}\t{player.surname}\t{player.birth_date}")
+                # print(f"{player.id}\t{player.name}\t{player.surname}\t{player.birth_date}")
+                print(f"{player.id}\t"
+                      f"{player.name}\t"
+                      f"{player.surname}\t"
+                      f"{player.birth_date}")
         else:
             print("\nAucun joueur inscrit.")
+
+    @classmethod
+    def update_player_info(cls, player):
+        print(f"1. Nom: {player.name}")
+        print(f"2. Prénom: {player.surname} \n")
+        # print("\nPour annuler, appuyez sur Entrée pour revenir à l'accueil")
+        choice = input("Choix: ")
+
+        if choice == '1':
+            name_update = input("Nouveau nom: ")
+            player.name = name_update
+            return name_update
+        elif choice == '2':
+            surname_update = input("Nouveau prénom: ")
+            player.surname = surname_update
+            return surname_update
+
+    @classmethod
+    def select_player_option(cls, player):
+        cls.display_players(player)
+
+        while True:
+            print("\n\n1. Mise à jour du joueur")
+            print("h. home\n")
+            choice = input("choix: ")
+
+            if choice == 'h':
+                break
+            elif choice == '1':
+                player_id = input("Saisir l'identifiant du joueur: ")
+                return choice, player_id
+            else:
+                print("Choix invalide. Veuillez saisir une option valide.")
+
+        return choice, None
 
     @classmethod
     def add_players(cls, players):
@@ -70,23 +109,32 @@ class TournamentView:
         print("id\tnom\tprenom\tdate de naissance")
 
         for player in players:
-            print(f"{player.id}\t{player.name}\t{player.surname}\t{player.birth_date}")
+            # print(f"{player.id}\t{player.name}\t{player.surname}\t{player.birth_date}")
+            print(
+                f"{player.id}\t"
+                f"{player.name}\t"
+                f"{player.surname}\t"
+                f"{player.birth_date}"
+            )
 
         selected_players = []
 
         for _ in range(8):
             while True:
                 try:
-                    player_id = input("Sélectionner un joueur par son numéro d'identification:")
+                    player_id = input("Sélectionner un joueur "
+                                      "par son numéro d'identification:")
                     player = next(p for p in players if p.id == player_id)
 
                     if player_id not in [p.id for p in selected_players]:
                         selected_players.append(player)
                         break
                     else:
-                        print("Ce joueur a déjà été sélectionné. Veuillez choisir un autre joueur.")
+                        print("Ce joueur a déjà été sélectionné. "
+                              "Veuillez choisir un autre joueur.")
                 except StopIteration:
-                    print("ID de joueur invalide. Veuillez choisir un ID existant dans la liste.")
+                    print("ID de joueur invalide. "
+                          "Veuillez choisir un ID existant dans la liste.")
 
         return selected_players
 
@@ -121,7 +169,7 @@ class TournamentView:
                 if winner:
                     result_status = f"{winner.name} {winner.surname} a gagné"
                 else:
-                    result_status = f"Match nul"
+                    result_status = "Match nul"
             else:
                 result_status = "en attente de résultats"
 
@@ -137,7 +185,7 @@ class TournamentView:
             if not match.has_result():
                 print(f"{i}. Entrer le résultat du match {i}")
 
-        print("h. Accueil")
+        print("h. home")
         return input("Choix: ")
 
     @classmethod
@@ -173,9 +221,16 @@ class TournamentView:
         print("Nom\t\tLieu\tDate de début\t\tNombre de rounds\n")
 
         for tournament in tournaments:
-            print(f"{tournament.name}\t{tournament.place}\t{tournament.start_date}\t{tournament.nb_rounds}")
+            # print(f"{tournament.name}\t{tournament.place}\t{tournament.start_date}\t{tournament.nb_rounds}")
+            print(
+                f"{tournament.name}\t"
+                f"{tournament.place}\t"
+                f"{tournament.start_date}\t"
+                f"{tournament.nb_rounds}"
+            )
 
         print("\nMENU:\n")
+        print("\nh. home\n")
 
         return input("Sélectionner un tournoi par son nom: ").strip().title()
 

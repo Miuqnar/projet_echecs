@@ -1,6 +1,3 @@
-from src.constants.constant import DATA_DIR
-
-
 class Player:
     """
     Initialisation des attributs
@@ -42,4 +39,3 @@ class Player:
             surname=data["surname"],
             birth_date=data["birth_date"]
         )
-

@@ -15,6 +15,8 @@ class HomeController:
         elif choice == "2":
             return 'list_tournaments', None
         elif choice == "3":
+            return 'player_management', None
+        elif choice == "4":
             print("Programme terminé. Au revoir!")
             return 'home', 'exit'
 

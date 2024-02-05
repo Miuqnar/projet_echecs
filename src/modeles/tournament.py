@@ -2,7 +2,6 @@ import random
 from datetime import datetime
 
 from src.modeles.match import Match
-from src.modeles.player import Player
 from src.modeles.round import Round
 
 
@@ -69,8 +68,10 @@ class Tournament:
     def generate_pairs(self):
         """Génère les paires de joueurs pour la prochaine ronde."""
 
-        # Trie les joueurs en fonction de leurs points dans l'ordre décroissant.
-        players_sorted = sorted(self.players, key=lambda x: x.points, reverse=True)
+        # Trie les joueurs en fonction de
+        # leurs points dans l'ordre décroissant.
+        players_sorted = sorted(self.players, key=lambda x: x.points,
+                                reverse=True)
 
         pairs = []
 
@@ -80,9 +81,11 @@ class Tournament:
 
             # Vérifier si les joueurs ont déjà joué ensemble
             while player2 and self.match_exists(player1, player2):
-                # Si oui, mélange aléatoirement la liste des joueurs et réessaie avec de nouveaux joueurs.
+                # Si oui, mélange aléatoirement la liste des
+                # joueurs et réessaie avec de nouveaux joueurs.
                 random.shuffle(players_sorted)
-                player1 = players_sorted[i]  # Récupère à nouveau le premier joueur de la paire après le mélange.
+                player1 = players_sorted[i]  # Récupère à nouveau le
+                # premier joueur de la paire après le mélange.
                 player2 = players_sorted[i + 1]
 
             pairs.append((player1, player2))
@@ -116,10 +119,13 @@ class Tournament:
     #             match.player1.points += match.score_player1
     #             match.player2.points += match.score_player2
     #
-    #     # Tri des joueurs en fonction de leurs points dans l'ordre décroissant
-    #     self.players = sorted(self.players, key=lambda x: x.points, reverse=True)
+    #     # Tri des joueurs en fonction de
+    #     leurs points dans l'ordre décroissant
+    #     self.players = sorted(self.players, key=lambda x: x.points,
+    #     reverse=True)
     #
-    #     players_score = [{"id": player.id, "score": player.points} for player in self.players]
+    #     players_score = [{"id": player.id, "score": player.points}
+    #     for player in self.players]
     #
     #     return players_score
 
@@ -142,7 +148,8 @@ class Tournament:
                 {
                     "id": player.id,
                     "score": player.points
-                } for player in sorted(self.players, key=lambda x: x.points, reverse=True)]
+                } for player in sorted(self.players, key=lambda x: x.points,
+                                       reverse=True)]
         }
 
     @classmethod
@@ -163,8 +170,9 @@ class Tournament:
         instance.director_remark = data["director_remark"]
 
         # objets Player existants de la liste players
-        instance.players = [players[player_id] for player_id in data['players']]
-        instance.rounds = [Round.deserialize(round_data, players) for round_data in data['rounds']]
+        instance.players = [players[player_id]
+                            for player_id in data['players']]
+        instance.rounds = [Round.deserialize(round_data, players)
+                           for round_data in data['rounds']]
 
         return instance
-

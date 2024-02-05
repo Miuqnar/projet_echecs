@@ -10,7 +10,7 @@ class HomeView:
         print("MENU TOURNOI")
         print("1. Créer un tournoi")
         print("2. Résumé du tournoi")
-        print("3. Gestions des joueeurs")
+        print("3. Gestion des joueurs")
         print("4. Sortir")
 
-        return input("Choisissez une option:")
+        return input("Choisissez une option: ")
